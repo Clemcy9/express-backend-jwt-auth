@@ -9,7 +9,8 @@ app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
   })
 );
@@ -35,9 +36,10 @@ function authTokenMiddleware(req, res, next) {
 }
 
 const PORT = 4000;
-const JWT_SECRET = process.env.JWT_SECRET;
+// const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = "209rfioeforeoijnrifv9rejerjfouew09juf09we";
 
-app.get("/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   const existinguser = users.find((u) => u.username === username);
@@ -46,7 +48,7 @@ app.get("/register", async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  username.push({ username, password: hashedPassword });
+  users.push({ username, password: hashedPassword });
 
   res.status(201).json({ message: "user registered" });
 });
